@@ -1,0 +1,540 @@
+:root {
+  --bg: #fdfaf7;
+  --card: #fffdfb;
+  --ink: #4a3b36;
+  --muted: #8c7a72;
+  --accent: #c98b8b;
+  --gold: #b89b5e;
+  --petal: #f7dede;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, #fffdf6 0%, rgba(255, 253, 246, 0) 70%),
+    linear-gradient(180deg, #fffcf6 0%, var(--bg) 55%, #f5eef2 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  min-height: 100vh;
+}
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Falling petals */
+.petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.petal {
+  position: absolute;
+  top: -40px;
+  background: var(--petal);
+  border-radius: 80% 0 80% 0;
+  opacity: 0.7;
+  animation: fall linear infinite;
+}
+
+.page > .envelope-scene,
+.page > .card {
+  z-index: 1;
+}
+
+/* Heavenly light rays from above */
+.rays {
+  position: fixed;
+  top: -60vmax;
+  left: 50%;
+  width: 120vmax;
+  height: 120vmax;
+  margin-left: -60vmax;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 236, 190, 0.28) 0deg 6deg, transparent 6deg 18deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 65%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 65%);
+  animation: spin 90s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Soft clouds along the bottom */
+.clouds {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -60px;
+  height: 160px;
+  pointer-events: none;
+}
+
+.clouds span {
+  position: absolute;
+  bottom: 0;
+  background: #fff;
+  border-radius: 50%;
+  filter: blur(14px);
+  opacity: 0.95;
+  animation: cloud-drift 14s ease-in-out infinite alternate;
+}
+
+.clouds span:nth-child(1) { left: -5%; width: 40%; height: 120px; }
+.clouds span:nth-child(2) { left: 22%; width: 35%; height: 150px; animation-delay: -4s; }
+.clouds span:nth-child(3) { left: 48%; width: 34%; height: 130px; animation-delay: -8s; }
+.clouds span:nth-child(4) { left: 72%; width: 38%; height: 145px; animation-delay: -2s; }
+.clouds span:nth-child(5) { left: 35%; width: 30%; height: 100px; bottom: 40px; opacity: 0.7; animation-delay: -6s; }
+
+@keyframes cloud-drift {
+  to {
+    transform: translateX(30px);
+  }
+}
+
+/* Drifting white feathers */
+.feather {
+  position: absolute;
+  top: -60px;
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 3px rgba(184, 155, 94, 0.25));
+  animation: feather-fall linear infinite;
+}
+
+@keyframes feather-fall {
+  0% { transform: translate(0, 0) rotate(-20deg); }
+  25% { transform: translate(40px, 27vh) rotate(25deg); }
+  50% { transform: translate(-10px, 55vh) rotate(-25deg); }
+  75% { transform: translate(35px, 82vh) rotate(20deg); }
+  100% { transform: translate(0, 112vh) rotate(-15deg); }
+}
+
+/* Twinkling sparkles */
+.sparkle {
+  position: absolute;
+  color: #e7cc8c;
+  text-shadow: 0 0 8px rgba(255, 226, 150, 0.9);
+  opacity: 0;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  50% { opacity: 0.9; transform: scale(1) rotate(45deg); }
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(540deg);
+  }
+}
+
+/* Envelope */
+.envelope {
+  position: relative;
+  width: min(360px, 100%);
+  aspect-ratio: 3 / 2;
+  background: linear-gradient(160deg, #f7ece4, #efdccf);
+  border: 1px solid #e3cbbd;
+  border-radius: 6px;
+  box-shadow: 0 20px 40px rgba(74, 59, 54, 0.15);
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.3s ease;
+}
+
+.envelope::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, transparent 49.5%, #e3cbbd 50%, transparent 50.5%),
+    linear-gradient(to bottom left, transparent 49.5%, #e3cbbd 50%, transparent 50.5%);
+  background-size: 50% 60%;
+  background-repeat: no-repeat;
+  background-position: left top, right top;
+  pointer-events: none;
+}
+
+.envelope:hover {
+  transform: translateY(-4px) rotate(-1deg);
+}
+
+.seal {
+  z-index: 1;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  box-shadow: 0 4px 10px rgba(201, 139, 139, 0.5);
+}
+
+.envelope-label {
+  word-spacing: 0.2em;
+  z-index: 1;
+  font-family: 'Great Vibes', cursive;
+  font-size: 30px;
+}
+
+.hint {
+  z-index: 1;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Card */
+.card {
+  position: relative;
+  width: min(560px, 100%);
+  background: linear-gradient(180deg, #fffefd 0%, #fffcf9 100%);
+  border: 1px solid #f1e4dc;
+  border-radius: 280px 280px 28px 28px / 240px 240px 28px 28px;
+  padding: 104px 64px 72px;
+  text-align: center;
+  box-shadow: 0 0 50px 10px rgba(255, 240, 205, 0.7), 0 0 0 8px rgba(255, 255, 255, 0.8);
+  animation: rise 0.8s ease-out both, heavenly-glow 6s ease-in-out 0.8s infinite;
+}
+
+.meander {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.meander path,
+.meander rect {
+  fill: none;
+  stroke: #cdb27c;
+  stroke-width: 1.3;
+}
+
+.card-crown {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.card-heart {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 22px;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 14px rgba(201, 139, 139, 0.45), 0 0 0 4px #fffefd, 0 0 24px 8px rgba(255, 236, 190, 0.8);
+  animation: heartbeat 1.8s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.15); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.1); }
+}
+
+/* Angel wings on the heart */
+.wing {
+  width: 62px;
+  height: 42px;
+  margin: 0 -8px;
+  filter: drop-shadow(0 2px 6px rgba(216, 191, 138, 0.45));
+}
+
+.wing-left {
+  transform-origin: right center;
+  animation: flap-left 3s ease-in-out infinite;
+}
+
+.wing-right {
+  transform-origin: left center;
+  animation: flap-right 3s ease-in-out infinite;
+}
+
+@keyframes flap-left {
+  0%, 100% { transform: rotate(6deg); }
+  50% { transform: rotate(20deg); }
+}
+
+@keyframes flap-right {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(-20deg); }
+}
+
+/* Golden halo floating above the heart */
+.halo {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  width: 40px;
+  height: 11px;
+  margin-left: -20px;
+  border: 2.5px solid #e2c27a;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(255, 222, 140, 0.8), inset 0 0 6px rgba(255, 222, 140, 0.8);
+  animation: halo-float 3s ease-in-out infinite;
+}
+
+@keyframes halo-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes heavenly-glow {
+  0%, 100% {
+    box-shadow: 0 0 50px 10px rgba(255, 240, 205, 0.7), 0 0 0 8px rgba(255, 255, 255, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 80px 22px rgba(255, 240, 205, 0.95), 0 0 0 8px rgba(255, 255, 255, 0.9);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+}
+
+.eyebrow {
+  font-size: 14px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+h1 {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+  font-size: clamp(56px, 14vw, 84px);
+  color: var(--accent);
+  margin: 8px 0 0;
+}
+
+.divider {
+  color: var(--gold);
+  font-size: 24px;
+  margin: 4px 0 24px;
+}
+
+.line {
+  font-size: 20px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  animation: fade 1s ease-out both;
+}
+
+.signoff {
+  margin-top: 28px;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--muted);
+  animation: fade 1s ease-out both;
+}
+
+.signature {
+  display: block;
+  font-family: 'Great Vibes', cursive;
+  font-style: normal;
+  font-size: 40px;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 80px 48px 64px;
+    border-radius: 200px 200px 24px 24px / 170px 170px 24px 24px;
+  }
+  .line {
+    font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .petal,
+  .feather {
+    display: none;
+  }
+  * {
+    animation: none !important;
+  }
+}
+
+/* Sandy the cat */
+.cat-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+}
+
+.cat-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.cat {
+  width: 150px;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.cat-wrap figcaption {
+  font-family: 'Great Vibes', cursive;
+  font-size: 28px;
+  color: var(--accent);
+  margin-top: -4px;
+}
+
+.cat-tail {
+  transform-origin: 148px 182px;
+  animation: swish 2.6s ease-in-out infinite;
+}
+
+.cat-body {
+  transform-origin: 100px 200px;
+  animation: breathe 3.5s ease-in-out infinite;
+}
+
+.cat-head {
+  transform-origin: 100px 135px;
+  animation: tilt 7s ease-in-out infinite;
+}
+
+.cat-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 5s infinite;
+}
+
+.cat-ear-right {
+  transform-origin: 128px 58px;
+  animation: twitch 6s infinite;
+}
+
+.cat-button:hover .cat-pupil {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scaleX(2);
+  transition: transform 0.3s;
+}
+
+.cat-heart {
+  position: absolute;
+  top: 10px;
+  right: 22px;
+  color: var(--accent);
+  font-size: 18px;
+  opacity: 0;
+  animation: float-heart 6s ease-out infinite 2s;
+}
+
+.cat-bubble {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-60%);
+  background: #fff;
+  border: 1px solid #eadbd0;
+  border-radius: 14px;
+  padding: 4px 12px;
+  font-size: 16px;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(74, 59, 54, 0.1);
+  animation: fade 0.3s ease-out both;
+  z-index: 2;
+}
+
+@keyframes swish {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-14deg); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025, 1.015); }
+}
+
+@keyframes tilt {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-4deg); }
+  60% { transform: rotate(3deg); }
+}
+
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+
+@keyframes twitch {
+  0%, 80%, 86%, 100% { transform: rotate(0deg); }
+  83% { transform: rotate(12deg); }
+}
+
+@keyframes float-heart {
+  0% { opacity: 0; transform: translateY(0) scale(0.6); }
+  15% { opacity: 1; }
+  40%, 100% { opacity: 0; transform: translateY(-40px) scale(1.1); }
+}
+
+.envelope-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(360px, 100%);
+}
+
+.envelope-scene .cat-wrap {
+  margin-bottom: -38px;
+  z-index: 2;
+}
+
+.card .cat-wrap {
+  margin-top: 24px;
+}
